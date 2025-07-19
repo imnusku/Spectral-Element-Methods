@@ -1,0 +1,66 @@
+clc;
+clear;
+x = (-pi:0.01:pi); 
+
+unitstep = zeros(size(x));
+unitstep(x<0)=-1;
+unitstep(x>=0) = 1; 
+figure(1)
+plot(x,unitstep,'b','linewidth',2)
+hold on
+
+f=0
+for k=1:100
+%k=1
+bk= (2/(pi*k))*(1-cos(pi*k));
+f= f+bk*sin(k*x);
+end
+plot(x,f,'r','linewidth',1)
+legend('f(x)','S7: f(x) with k=7')
+grid on
+
+
+
+%%%2
+
+clc;
+clear;
+x = (-pi:0.01:pi);
+func= zeros(size(x));
+func(x<0)=0;
+func(316:629) = x(316:629); 
+figure(1)
+hold on
+plot(x,func,'b','linewidth',2)
+
+
+f=pi/4
+for k=1:7
+%k=1
+ak=(1/(pi*(k.^2)))*((pi*k*sin(pi*k))+cos(pi*k)-1);
+bk=(1/(pi*(k.^2)))*(sin(pi*k)-(pi*k*cos(pi*k)));
+f= f+ak*cos(k*x)+bk*sin(k*x);
+end
+plot(x,f,'r','linewidth',2)
+grid on;
+legend('f(x)','S7: f(x) with k=7')
+
+
+%%%3
+clc;
+clear;
+x = (-pi:0.01:pi);
+func= x.^2;
+plot(x,func,'b','linewidth',2)
+hold on
+
+f=(pi.^2)/3
+for k=1:7
+%k=1
+ak=(1/(pi*(k.^3)))*((2*(pi.^2*k.^2-2)*sin(pi*k))+4*pi*k*cos(pi*k));
+f= f+ak*cos(k*x);
+end
+plot(x,f,'r','linewidth',2)
+grid on;
+legend('f(x)','S1: f(x) with k=1')
+

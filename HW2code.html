@@ -1,0 +1,858 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>problem5a</title><meta name="generator" content="MATLAB 9.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-09-17"><meta name="DC.source" content="problem5a.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%%PROBLEM 5A FUNCTION (i)</span>
+clc;
+clear;
+<span class="comment">%tic</span>
+L=7;
+N=8;                    <span class="comment">%varied in each problem: N=8, 16, 32, 64, 128</span>
+n=1;                      <span class="comment">%varied in each problem: n=1, 2</span>
+f_kd=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+
+<span class="comment">%Discrete Fourier Transform</span>
+<span class="keyword">for</span> m = 1:N
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-1);
+    f_kd(m)=f_kd(m)+((cos(n.*pi.*x(j)./L)).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+ <span class="keyword">end</span>
+ f_kd(m)=(1/N).*f_kd(m);
+<span class="keyword">end</span>
+<span class="comment">%toc</span>
+<span class="comment">%Tabulating Numerical Values of Coefficients</span>
+<span class="keyword">for</span> i =1:N
+    first(i,:)=table(k(i),f_kd(i),<span class="string">'VariableNames'</span>,[<span class="string">"k"</span>,<span class="string">"Numerical Values"</span>]);
+ <span class="keyword">end</span>
+
+
+<span class="comment">%Continuous Fourier Tranform</span>
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> j=1:N
+    f_kc(j)=(1/7).*(integral(@(x) (cos(n.*pi.*x/L).*exp(-1i.*2.*pi.*m(j).*x/L)),0,L));
+<span class="keyword">end</span>
+<span class="keyword">for</span> i =1:N
+    second(i,:)=table(k(i),f_kc(i),<span class="string">'VariableNames'</span>,[<span class="string">"k"</span>,<span class="string">"Exact Values"</span>]);
+<span class="keyword">end</span>
+
+
+<span class="comment">%Comparing Exact and Numerical Values</span>
+format <span class="string">short</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(f_kd(i),f_kc(i),<span class="string">'VariableNames'</span>,[<span class="string">"Numerical Values"</span>,<span class="string">"Exact Values"</span>]);
+ <span class="keyword">end</span>
+
+
+
+ <span class="comment">%Calculating error norms: the array of errors are created manually and</span>
+ <span class="comment">%plotted in the next code</span>
+
+ <span class="comment">%Linf error</span>
+ <span class="keyword">for</span> i =1:N
+     Linfall(i)=abs(f_kd(i)-f_kc(i));
+ <span class="keyword">end</span>
+ Linf=max(Linfall);
+
+ <span class="comment">%Ltwo error</span>
+ Ltwoall=0;
+ <span class="keyword">for</span> i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kd(i)-f_kc(i)).^2);
+ <span class="keyword">end</span>
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+ <span class="comment">%%PROBLEM 5A function (ii)</span>
+ clc;
+clear;
+
+L=2.*pi;
+N=128;                    <span class="comment">%varied in each problem: N=8, 16, 32, 64, 128</span>
+n=2;                     <span class="comment">%varied in each problem: n=1, 2</span>
+f_kd=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+
+<span class="comment">%Discrete Fourier Transform</span>
+<span class="keyword">for</span> m = 1:N
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f_kd(m)=f_kd(m)+((x(j).^n).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+ <span class="keyword">end</span>
+ f_kd(m)=(1/N).*f_kd(m);
+<span class="keyword">end</span>
+<span class="comment">%Tabulating Numerical Values of Coefficients</span>
+<span class="keyword">for</span> i =1:N
+    first(i,:)=table(k(i),f_kd(i),<span class="string">'VariableNames'</span>,[<span class="string">"k"</span>,<span class="string">"Numerical Values"</span>]);
+ <span class="keyword">end</span>
+
+<span class="comment">%Continuous Fourier Tranform</span>
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> j=1:N
+    f_kc(j)=(1/(2.*pi)).*(integral(@(x) ((x.^n).*exp(-1i.*2.*pi.*m(j).*x/L)),-pi,pi));
+<span class="keyword">end</span>
+<span class="keyword">for</span> i =1:N
+    second(i,:)=table(k(i),f_kc(i),<span class="string">'VariableNames'</span>,[<span class="string">"k"</span>,<span class="string">"Exact Values"</span>]);
+ <span class="keyword">end</span>
+
+<span class="comment">%Comparing Exact and Numerical Values</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(f_kd(i),f_kc(i),<span class="string">'VariableNames'</span>,[<span class="string">"Numerical Values"</span>,<span class="string">"Exact Values"</span>]);
+ <span class="keyword">end</span>
+
+ <span class="comment">%Calculating error norms: the array of errors are created manually and</span>
+ <span class="comment">%plotted in the next code</span>
+
+ <span class="comment">%Linf error</span>
+ <span class="keyword">for</span> i =1:N
+     Linfall(i)=abs(f_kd(i)-f_kc(i));
+ <span class="keyword">end</span>
+ Linf=max(Linfall);
+
+ <span class="comment">%L2 error</span>
+ Ltwoall=0;
+ <span class="keyword">for</span> i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kd(i)-f_kc(i)).^2);
+ <span class="keyword">end</span>
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+
+<span class="comment">%%PROBLEM 5c function (i): Calculating inverse DFT</span>
+clc;
+clear;
+L=7;
+N=32;                       <span class="comment">%varied for each value of N</span>
+n=1;                       <span class="comment">%varied for eac value of n</span>
+
+<span class="comment">%calculating f(k)</span>
+f_k=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> m = 1:N
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-1);
+    f_k(m)=f_k(m)+((cos(n.*pi.*x(j)./L)).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+
+ <span class="keyword">end</span>
+ f_k(m)=(1/N).*f_k(m);
+<span class="keyword">end</span>
+
+<span class="comment">%calculating function values</span>
+<span class="keyword">for</span> i = 1:N
+func(i)= cos(n.*pi.*(x(i))./L);
+<span class="keyword">end</span>
+
+<span class="comment">%calculating f(j)</span>
+ f_j=zeros(1,N);
+ <span class="keyword">for</span> j= 1:N
+     <span class="keyword">for</span> m= 1:N
+         x(j)=(L/N).*(j-1);
+         f_j(j)=f_j(j)+(f_k(m).*exp(1i.*2.*pi.*k(m).*x(j)/L));
+     <span class="keyword">end</span>
+ <span class="keyword">end</span>
+
+ <span class="comment">%comparing function values and f(j)</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),<span class="string">'VariableNames'</span>,[<span class="string">"x"</span>,<span class="string">"Function Values"</span>,<span class="string">"Inverse DFT Values"</span>]);
+ <span class="keyword">end</span>
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+
+<span class="comment">%%PROBLEM 5c function (ii): Calculating inverse DFT</span>
+
+clc;
+clear;
+L=2.*pi;
+N=32;                       <span class="comment">%varied for each value of N</span>
+n=2;                       <span class="comment">%varied for eac value of n</span>
+
+<span class="comment">%calculating f(k)</span>
+f_k=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> m = 1:N
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f_k(m)=f_k(m)+((x(j).^n).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+
+ <span class="keyword">end</span>
+ f_k(m)=(1/N).*f_k(m);
+<span class="keyword">end</span>
+
+<span class="comment">%calculating function values</span>
+<span class="keyword">for</span> i = 1:N
+func(i)= x(i).^n;
+<span class="keyword">end</span>
+
+<span class="comment">%calculating f(j)</span>
+ f_j=zeros(1,N);
+ <span class="keyword">for</span> j= 1:N
+     <span class="keyword">for</span> m= 1:N
+         x(j)=(L/N).*(j-((N/2)+1));
+         f_j(j)=f_j(j)+(f_k(m).*exp(1i.*2.*pi.*k(m).*x(j)/L));
+     <span class="keyword">end</span>
+ <span class="keyword">end</span>
+
+ <span class="comment">%comparing function values and f(j)</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),<span class="string">'VariableNames'</span>,[<span class="string">"x"</span>,<span class="string">"Function Values"</span>,<span class="string">"Inverse DFT Values"</span>]);
+ <span class="keyword">end</span>
+
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+ <span class="comment">%%PROBLEM 5(E): plotting errors</span>
+
+ clc;
+clear;
+
+<span class="comment">%Plotting error norms for function (i)</span>
+N=[8, 16, 32, 64, 128];
+Linf1= [0.1489,  0.0742, 0.0371, 0.0185, 0.0093];
+Ltwo1= [0.1325, 0.0661, 0.0330, 0.0165, 0.0082];
+Linf2 = [1.6830e-16, 3.0206e-16, 9.2715e-16, 1.1394e-15, 1.8881e-15];
+Ltwo2 = [9.3755e-17, 1.8009e-16, 3.3430e-16,  4.3353e-16, 5.6254e-16];
+figure(1)
+loglog(N,Linf1)
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+loglog(N,Ltwo1)
+hold <span class="string">on</span>
+loglog(N,Linf2)
+hold <span class="string">on</span>
+loglog(N,Ltwo2)
+xlabel(<span class="string">"N"</span>)
+ylabel(<span class="string">"error"</span>)
+legend(<span class="string">'Linf, n=1'</span>,<span class="string">'Ltwo, n=1'</span>,<span class="string">'Linf, n=2'</span>,<span class="string">'Ltwo, n=2'</span>)
+title(<span class="string">'FFT Error norms: function (i)'</span>)
+
+<span class="comment">%Plotting error norms for function (ii)</span>
+Linf3= [0.4655,  0.2328, 0.1164, 0.0582, 0.0291];
+Ltwo3= [0.4158, 0.2075, 0.1037, 0.0518, 0.0259 ];
+Linf4 = [0.1834, 0.0459, 0.0115, 0.0029, 7.1650e-04];
+Ltwo4 = [0.1288, 0.0319, 0.0079, 0.0020, 4.9606e-04 ];
+figure(2)
+loglog(N,Linf3)
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+loglog(N,Ltwo3)
+hold <span class="string">on</span>
+loglog(N,Linf4)
+hold <span class="string">on</span>
+loglog(N,Ltwo4)
+xlabel(<span class="string">"N"</span>)
+ylabel(<span class="string">"error"</span>)
+legend(<span class="string">'Linf, n=1'</span>,<span class="string">'Ltwo, n=1'</span>,<span class="string">'Linf, n=2'</span>,<span class="string">'Ltwo, n=2'</span>)
+title(<span class="string">'FFT Error norms: function (ii)'</span>)
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">%%PRBOBLEM 6 FFT: function (i)</span>
+
+clc;
+clear;
+
+<span class="comment">%function i</span>
+<span class="comment">%tic</span>
+L=7;
+N=2048;            <span class="comment">%varied for each problem</span>
+n=1;            <span class="comment">%varied for each problem</span>
+f_k=zeros(1,N);
+f=zeros(1,N);
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-1);
+    f(j)= cos(n.*pi.*(x(j))./L);
+ <span class="keyword">end</span>
+ f_k=fft(f)/N;
+<span class="comment">%toc</span>
+
+
+<span class="comment">%calculating function values</span>
+<span class="keyword">for</span> i = 1:N
+func(i)= cos(n.*pi.*(x(i))./L);
+<span class="keyword">end</span>
+
+<span class="comment">%calculating inverse fft</span>
+ f_j=zeros(1,N);
+ f_j=ifft(f_k)*N;
+
+ <span class="comment">%comparing function values and f(j)</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),<span class="string">'VariableNames'</span>,[<span class="string">"x"</span>,<span class="string">"Function Values"</span>,<span class="string">"Inverse DFT Values"</span>]);
+ <span class="keyword">end</span>
+
+  <span class="comment">%Continuous Fourier Tranform</span>
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> j=1:N
+    f_kc(j)=(1/7).*(integral(@(x) (cos(n.*pi.*x/L).*exp(-1i.*2.*pi.*m(j).*x/L)),0,L));
+<span class="keyword">end</span>
+
+ <span class="comment">%Calculating error norms: the array of errors are created manually and</span>
+ <span class="comment">%plotted in the next code</span>
+
+ <span class="comment">%Linf error</span>
+ <span class="keyword">for</span> i =1:N
+     Linfall(i)=abs(f_k(i)-f_kc(i));
+ <span class="keyword">end</span>
+ Linf=max(Linfall);
+
+ <span class="comment">%Ltwo error</span>
+ Ltwoall=0;
+ <span class="keyword">for</span> i= 1:N
+     Ltwoall=Ltwoall+(abs(f_k(i)-f_kc(i)).^2);
+ <span class="keyword">end</span>
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">%%PRBOBLEM 6 FFT: function (ii)</span>
+
+clc;
+clear;
+
+<span class="comment">%function ii</span>
+<span class="comment">%tic</span>
+L=2.*pi;
+N=16;                <span class="comment">%varied for each problem</span>
+n=1;                 <span class="comment">%varied for each problem</span>
+f_k=zeros(1,N);
+f=zeros(1,N);
+khalf=(0:N/2-1)';
+kotherhalf=(-N/2:-1)';
+k=cat(1,khalf,kotherhalf);
+ <span class="keyword">for</span> j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f(j)= x(j).^n;
+ <span class="keyword">end</span>
+f_k=fft(f)/N;
+<span class="comment">%shifted value is taken from the column of data</span>
+<span class="comment">% fft calculates values such that it goes from 0 to N-1 and then goes from -N to -1</span>
+<span class="keyword">for</span> i=1:N
+  f_kact=exp(-1i*k*x(1)).*f_k;
+<span class="keyword">end</span>
+
+<span class="comment">%calculating function values</span>
+<span class="keyword">for</span> i = 1:N
+ func(i)= x(i).^n;
+<span class="keyword">end</span>
+
+<span class="comment">%calculating inverse fft</span>
+ f_j=zeros(1,N);
+ f_j=ifft(f_k)*N;
+
+ <span class="comment">%comparing function values and f(j)</span>
+ <span class="keyword">for</span> i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),<span class="string">'VariableNames'</span>,[<span class="string">"x"</span>,<span class="string">"Function Values"</span>,<span class="string">"Inverse DFT Values"</span>]);
+ <span class="keyword">end</span>
+
+ <span class="comment">%Continuous Fourier Tranform</span>
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+<span class="keyword">for</span> j=1:N
+    f_kc(j)=(1/(2.*pi)).*(integral(@(x) ((x.^n).*exp(-1i.*2.*pi.*m(j).*x/L)),-pi,pi));
+<span class="keyword">end</span>
+
+  <span class="comment">%Calculating error norms: the array of errors are created manually and</span>
+ <span class="comment">%plotted in the next code</span>
+
+ <span class="comment">%Linf error</span>
+ <span class="keyword">for</span> i =1:N
+     Linfall(i)=abs(f_kact(i)-f_kc(i));
+ <span class="keyword">end</span>
+ Linf=max(Linfall);
+
+ <span class="comment">%L2 error</span>
+ Ltwoall=0;
+ <span class="keyword">for</span> i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kact(i)-f_kc(i)).^2);
+ <span class="keyword">end</span>
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+<span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+
+<span class="comment">%%PROBLEM 7: time comparison</span>
+ <span class="comment">%used tic-tac to calculate time for function (i) in both cases, wrote data</span>
+<span class="comment">%manually</span>
+
+
+N=[128, 256, 512, 1024, 2048];
+dft_time=[0.006082, 0.016782, 0.068109, 0.188510, 0.636136];
+fft_time= [0.001570,0.001811, 0.002224, 0.002018, 0.004782];
+
+figure(1)
+loglog(N,dft_time)
+grid <span class="string">on</span>
+hold <span class="string">on</span>
+loglog(N,fft_time)
+xlabel(<span class="string">"N"</span>)
+ylabel(<span class="string">"time"</span>)
+legend(<span class="string">'DFT_time'</span>,<span class="string">'FFT_time'</span>)
+title(<span class="string">'time for DFT and FFT VS N'</span>)
+</pre><img vspace="5" hspace="5" src="problem5a_01.png" alt=""> <img vspace="5" hspace="5" src="problem5a_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2022b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%%PROBLEM 5A FUNCTION (i)
+clc;
+clear;
+%tic
+L=7;
+N=8;                    %varied in each problem: N=8, 16, 32, 64, 128
+n=1;                      %varied in each problem: n=1, 2
+f_kd=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+
+%Discrete Fourier Transform
+for m = 1:N
+ for j = 1:N
+    x(j)=(L/N).*(j-1);
+    f_kd(m)=f_kd(m)+((cos(n.*pi.*x(j)./L)).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+ end
+ f_kd(m)=(1/N).*f_kd(m);
+end
+%toc
+%Tabulating Numerical Values of Coefficients
+for i =1:N
+    first(i,:)=table(k(i),f_kd(i),'VariableNames',["k","Numerical Values"]);
+ end
+
+
+%Continuous Fourier Tranform 
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+for j=1:N
+    f_kc(j)=(1/7).*(integral(@(x) (cos(n.*pi.*x/L).*exp(-1i.*2.*pi.*m(j).*x/L)),0,L));
+end
+for i =1:N
+    second(i,:)=table(k(i),f_kc(i),'VariableNames',["k","Exact Values"]);
+end
+
+
+%Comparing Exact and Numerical Values
+format short
+ for i =1:N
+    calc(i,:)=table(f_kd(i),f_kc(i),'VariableNames',["Numerical Values","Exact Values"]);
+ end
+ 
+ 
+
+ %Calculating error norms: the array of errors are created manually and
+ %plotted in the next code
+
+ %Linf error
+ for i =1:N
+     Linfall(i)=abs(f_kd(i)-f_kc(i));
+ end
+ Linf=max(Linfall);
+ 
+ %Ltwo error
+ Ltwoall=0;
+ for i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kd(i)-f_kc(i)).^2);
+ end
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ %%PROBLEM 5A function (ii)
+ clc;
+clear;
+
+L=2.*pi;
+N=128;                    %varied in each problem: N=8, 16, 32, 64, 128
+n=2;                     %varied in each problem: n=1, 2
+f_kd=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+
+%Discrete Fourier Transform
+for m = 1:N
+ for j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f_kd(m)=f_kd(m)+((x(j).^n).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+ end
+ f_kd(m)=(1/N).*f_kd(m);
+end
+%Tabulating Numerical Values of Coefficients
+for i =1:N
+    first(i,:)=table(k(i),f_kd(i),'VariableNames',["k","Numerical Values"]);
+ end
+
+%Continuous Fourier Tranform 
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+for j=1:N
+    f_kc(j)=(1/(2.*pi)).*(integral(@(x) ((x.^n).*exp(-1i.*2.*pi.*m(j).*x/L)),-pi,pi));
+end
+for i =1:N
+    second(i,:)=table(k(i),f_kc(i),'VariableNames',["k","Exact Values"]);
+ end
+
+%Comparing Exact and Numerical Values
+ for i =1:N
+    calc(i,:)=table(f_kd(i),f_kc(i),'VariableNames',["Numerical Values","Exact Values"]);
+ end
+ 
+ %Calculating error norms: the array of errors are created manually and
+ %plotted in the next code
+
+ %Linf error
+ for i =1:N
+     Linfall(i)=abs(f_kd(i)-f_kc(i));
+ end
+ Linf=max(Linfall);
+
+ %L2 error
+ Ltwoall=0;
+ for i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kd(i)-f_kc(i)).^2);
+ end
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%PROBLEM 5c function (i): Calculating inverse DFT
+clc;
+clear;
+L=7;
+N=32;                       %varied for each value of N
+n=1;                       %varied for eac value of n
+
+%calculating f(k)
+f_k=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+for m = 1:N
+ for j = 1:N
+    x(j)=(L/N).*(j-1);
+    f_k(m)=f_k(m)+((cos(n.*pi.*x(j)./L)).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+    
+ end
+ f_k(m)=(1/N).*f_k(m);
+end
+
+%calculating function values
+for i = 1:N
+func(i)= cos(n.*pi.*(x(i))./L);
+end
+
+%calculating f(j)
+ f_j=zeros(1,N);
+ for j= 1:N
+     for m= 1:N
+         x(j)=(L/N).*(j-1);
+         f_j(j)=f_j(j)+(f_k(m).*exp(1i.*2.*pi.*k(m).*x(j)/L)); 
+     end
+ end
+
+ %comparing function values and f(j)
+ for i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),'VariableNames',["x","Function Values","Inverse DFT Values"]);
+ end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%PROBLEM 5c function (ii): Calculating inverse DFT
+
+clc;
+clear;
+L=2.*pi;
+N=32;                       %varied for each value of N
+n=2;                       %varied for eac value of n
+
+%calculating f(k)
+f_k=zeros(1,N);
+k=-(N/2):1:((N/2)-1);
+for m = 1:N
+ for j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f_k(m)=f_k(m)+((x(j).^n).*exp(-1i.*2.*pi.*k(m).*x(j)/L));
+    
+ end
+ f_k(m)=(1/N).*f_k(m);
+end
+
+%calculating function values
+for i = 1:N
+func(i)= x(i).^n;
+end
+
+%calculating f(j)
+ f_j=zeros(1,N);
+ for j= 1:N
+     for m= 1:N
+         x(j)=(L/N).*(j-((N/2)+1));
+         f_j(j)=f_j(j)+(f_k(m).*exp(1i.*2.*pi.*k(m).*x(j)/L)); 
+     end
+ end
+
+ %comparing function values and f(j)
+ for i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),'VariableNames',["x","Function Values","Inverse DFT Values"]);
+ end
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ %%PROBLEM 5(E): plotting errors
+
+ clc;
+clear;
+
+%Plotting error norms for function (i)
+N=[8, 16, 32, 64, 128];
+Linf1= [0.1489,  0.0742, 0.0371, 0.0185, 0.0093];
+Ltwo1= [0.1325, 0.0661, 0.0330, 0.0165, 0.0082];
+Linf2 = [1.6830e-16, 3.0206e-16, 9.2715e-16, 1.1394e-15, 1.8881e-15];
+Ltwo2 = [9.3755e-17, 1.8009e-16, 3.3430e-16,  4.3353e-16, 5.6254e-16];
+figure(1)
+loglog(N,Linf1)
+grid on
+hold on
+loglog(N,Ltwo1)
+hold on
+loglog(N,Linf2)
+hold on
+loglog(N,Ltwo2)
+xlabel("N")
+ylabel("error")
+legend('Linf, n=1','Ltwo, n=1','Linf, n=2','Ltwo, n=2')
+title('FFT Error norms: function (i)')
+
+%Plotting error norms for function (ii)
+Linf3= [0.4655,  0.2328, 0.1164, 0.0582, 0.0291];
+Ltwo3= [0.4158, 0.2075, 0.1037, 0.0518, 0.0259 ];
+Linf4 = [0.1834, 0.0459, 0.0115, 0.0029, 7.1650e-04];
+Ltwo4 = [0.1288, 0.0319, 0.0079, 0.0020, 4.9606e-04 ];
+figure(2)
+loglog(N,Linf3)
+grid on
+hold on
+loglog(N,Ltwo3)
+hold on
+loglog(N,Linf4)
+hold on
+loglog(N,Ltwo4)
+xlabel("N")
+ylabel("error")
+legend('Linf, n=1','Ltwo, n=1','Linf, n=2','Ltwo, n=2')
+title('FFT Error norms: function (ii)')
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%PRBOBLEM 6 FFT: function (i)
+
+clc;
+clear;
+
+%function i
+%tic 
+L=7;
+N=2048;            %varied for each problem
+n=1;            %varied for each problem
+f_k=zeros(1,N);
+f=zeros(1,N);
+ for j = 1:N
+    x(j)=(L/N).*(j-1);
+    f(j)= cos(n.*pi.*(x(j))./L);
+ end
+ f_k=fft(f)/N;
+%toc 
+    
+
+%calculating function values
+for i = 1:N
+func(i)= cos(n.*pi.*(x(i))./L);
+end
+
+%calculating inverse fft
+ f_j=zeros(1,N);
+ f_j=ifft(f_k)*N;
+
+ %comparing function values and f(j)
+ for i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),'VariableNames',["x","Function Values","Inverse DFT Values"]);
+ end
+
+  %Continuous Fourier Tranform 
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+for j=1:N
+    f_kc(j)=(1/7).*(integral(@(x) (cos(n.*pi.*x/L).*exp(-1i.*2.*pi.*m(j).*x/L)),0,L));
+end
+
+ %Calculating error norms: the array of errors are created manually and
+ %plotted in the next code
+
+ %Linf error
+ for i =1:N
+     Linfall(i)=abs(f_k(i)-f_kc(i));
+ end
+ Linf=max(Linfall);
+ 
+ %Ltwo error
+ Ltwoall=0;
+ for i= 1:N
+     Ltwoall=Ltwoall+(abs(f_k(i)-f_kc(i)).^2);
+ end
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%PRBOBLEM 6 FFT: function (ii)
+
+clc;
+clear;
+
+%function ii
+%tic 
+L=2.*pi;
+N=16;                %varied for each problem
+n=1;                 %varied for each problem
+f_k=zeros(1,N);
+f=zeros(1,N);
+khalf=(0:N/2-1)';
+kotherhalf=(-N/2:-1)';
+k=cat(1,khalf,kotherhalf);
+ for j = 1:N
+    x(j)=(L/N).*(j-((N/2)+1));
+    f(j)= x(j).^n;
+ end
+f_k=fft(f)/N;
+%shifted value is taken from the column of data 
+% fft calculates values such that it goes from 0 to N-1 and then goes from -N to -1
+for i=1:N
+  f_kact=exp(-1i*k*x(1)).*f_k;
+end
+
+%calculating function values
+for i = 1:N
+ func(i)= x(i).^n;
+end
+
+%calculating inverse fft
+ f_j=zeros(1,N);
+ f_j=ifft(f_k)*N;
+
+ %comparing function values and f(j)
+ for i =1:N
+    calc(i,:)=table(x(i),func(i),f_j(i),'VariableNames',["x","Function Values","Inverse DFT Values"]);
+ end
+
+ %Continuous Fourier Tranform 
+f_kc=zeros(1,N);
+m=-(N/2):1:((N/2)-1);
+for j=1:N
+    f_kc(j)=(1/(2.*pi)).*(integral(@(x) ((x.^n).*exp(-1i.*2.*pi.*m(j).*x/L)),-pi,pi));
+end
+
+  %Calculating error norms: the array of errors are created manually and
+ %plotted in the next code
+
+ %Linf error
+ for i =1:N
+     Linfall(i)=abs(f_kact(i)-f_kc(i));
+ end
+ Linf=max(Linfall);
+
+ %L2 error
+ Ltwoall=0;
+ for i= 1:N
+     Ltwoall=Ltwoall+(abs(f_kact(i)-f_kc(i)).^2);
+ end
+ Ltwo=(Ltwoall.*(1/N)).^(1/2);
+                                      
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%PROBLEM 7: time comparison
+ %used tic-tac to calculate time for function (i) in both cases, wrote data
+%manually
+
+
+N=[128, 256, 512, 1024, 2048];
+dft_time=[0.006082, 0.016782, 0.068109, 0.188510, 0.636136];
+fft_time= [0.001570,0.001811, 0.002224, 0.002018, 0.004782];
+
+figure(1)
+loglog(N,dft_time)
+grid on
+hold on
+loglog(N,fft_time)
+xlabel("N")
+ylabel("time")
+legend('DFT_time','FFT_time')
+title('time for DFT and FFT VS N')
+
+
+
+##### SOURCE END #####
+--></body></html>
